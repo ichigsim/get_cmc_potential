@@ -17,7 +17,7 @@ def main():
     all_price = []
     potential_result = []
 
-    #  (ビットコイン発行数/アルト発行数)
+    # (ビットコイン価格 / (ビットコイン発行数/アルト発行数)) / アルト価格
     for i in range(len(cmc_ticker) - 1):
         all_id.append(cmc_ticker[i + 1]['id'])
         all_supply.append(float(cmc_ticker[i + 1]['available_supply']))
