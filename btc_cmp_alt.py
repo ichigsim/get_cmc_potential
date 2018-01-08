@@ -2,11 +2,15 @@ import urllib.request
 import json
 import pandas as pd
 
+"""
+get a cmc ticker amd culculate altcoin potential used by it.
+Finally, write the results to the csv.
+"""
 def main():
-    url = 'https://api.coinmarketcap.com/v1/ticker/?limit=100'
+    url = 'https://api.coinmarketcap.com/v1/ticker/?limit=400'
     response = urllib.request.urlopen(url)
     cmc_ticker = json.loads(response.read().decode('utf8'))
-    
+
     print(response)
 
     btc_supply = float(cmc_ticker[0]['available_supply'])
@@ -23,9 +27,11 @@ def main():
         all_supply.append(float(cmc_ticker[i + 1]['available_supply']))
         all_price.append(float(cmc_ticker[i + 1]['price_usd']))
 
-        potential_result.append(round(((btc_price_usd / (all_supply[i] / btc_supply)) / all_price[i]), 2))
+        potential_result.append( \
+        round(((btc_price_usd / (all_supply[i] / btc_supply)) / all_price[i]), 2))
 
-    potential_df = pd.DataFrame({'id': all_id, 'potential_result': potential_result}, index=list(range(2, len(cmc_ticker) + 1)))
+    potential_df = pd.DataFrame({'id': all_id, 'potential_result': potential_result}, \
+    index=list(range(2, len(cmc_ticker) + 1)))
 
     potential_df.to_csv('cmc_coin_potential.csv')
 
